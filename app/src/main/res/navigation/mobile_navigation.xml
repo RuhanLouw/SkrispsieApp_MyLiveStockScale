@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_measure">
+
+    <fragment
+        android:id="@+id/nav_measure"
+        android:name="com.mylivestock.app.ui.measure.MeasureFragment"
+        android:label="@string/menu_measure"
+        tools:layout="@layout/fragment_measure" />
+    <fragment
+        android:id="@+id/nav_data"
+        android:name="com.mylivestock.app.ui.data.DataFragment"
+        android:label="@string/menu_data"
+        tools:layout="@layout/fragment_data" />
+    <fragment
+        android:id="@+id/nav_bluetooth"
+        android:name="com.mylivestock.app.ui.bluetooth.BluetoothFragment"
+        android:label="@string/menu_bluetooth"
+        tools:layout="@layout/fragment_bluetooth" />
+</navigation>
