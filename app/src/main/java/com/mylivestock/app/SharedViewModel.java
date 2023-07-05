@@ -4,8 +4,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SharedViewModel extends ViewModel {
+
+    //BluetoothFragment UI Data {
+    private MutableLiveData<String> bluetoothStatus = new MutableLiveData<>();
+    // }
+
+    //MeasureFragment UI Data {
     private MutableLiveData<String> measureText = new MutableLiveData<>();
     private MutableLiveData<String> systemText = new MutableLiveData<>();
+    // }
 
     public void setMeasureText(String text) {
         measureText.setValue(text);

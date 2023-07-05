@@ -43,7 +43,7 @@ public class MeasureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button button = binding.button;
+        Button buttonMeasure = binding.buttonMeasure;
         TextView textViewMeasure = binding.textViewMeasure;
         TextView textViewSystem = binding.textViewSystem;
         // Observe the measureText LiveData from the shared ViewModel &
@@ -53,7 +53,7 @@ public class MeasureFragment extends Fragment {
         // Observe the systemText LiveData from the shared ViewModel &
         // Update the TextView with the new systemText value
         sharedViewModel.getSystemText().observe(getViewLifecycleOwner(), textViewSystem::setText);
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 sharedViewModel.setMeasureText("128.63");

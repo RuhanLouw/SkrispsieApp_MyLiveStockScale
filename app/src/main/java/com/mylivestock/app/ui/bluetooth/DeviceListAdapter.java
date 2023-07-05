@@ -63,6 +63,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                 //Start connection process
                 connectionInit = new ConnectionInit(deviceInfoModel.getDeviceName(), deviceInfoModel.getDeviceHardwareAddress());
+                //Notify of connection initiated
 
                 //Has a connection already been initiated?
                 //Possible bug, need to check redundancy

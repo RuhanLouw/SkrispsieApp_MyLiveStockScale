@@ -4,7 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 
 public class ConnectionInit {
 
-    boolean connectionStart = false;
+    private boolean connectionStart = false;
+    public CreateConnectThread createConnectThread;
     public ConnectionInit(String deviceName, String deviceHardwareAddress) {
 
         //if a bluetooth device has been selected from BluetoothFragment, then connect to it
@@ -16,7 +17,7 @@ public class ConnectionInit {
             selected device (see the thread code below)
              */
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            CreateConnectThread createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceHardwareAddress);
+            createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceHardwareAddress);
             createConnectThread.start();
             connectionStart = true;
         }
@@ -24,5 +25,8 @@ public class ConnectionInit {
 
     public boolean isConnectionStart(){
         return connectionStart;
+    }
+    public CreateConnectThread getCreateConnectThread(){
+        return createConnectThread;
     }
 }
