@@ -2,8 +2,8 @@
     <string name="app_name">MyLiveStock</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">MyLiveStock Scale</string>
+    <string name="nav_header_subtitle">by Ruhan Louw</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -13,4 +13,6 @@
     <string name="menu_measure">Measure</string>
     <string name="menu_data">Data</string>
     <string name="menu_bluetooth">Bluetooth</string>
+
+    <string name="Error">Err</string>
 </resources>

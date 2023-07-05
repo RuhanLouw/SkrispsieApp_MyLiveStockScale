@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_measure"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/baseline_av_timer_24"
             android:title="@string/menu_measure" />
         <item
             android:id="@+id/nav_data"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/baseline_storage_24"
             android:title="@string/menu_data" />
         <item
             android:id="@+id/nav_bluetooth"

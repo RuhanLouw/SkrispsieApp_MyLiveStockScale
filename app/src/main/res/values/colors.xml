@@ -7,4 +7,41 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="header_background">@color/tan</color>
+    <color name="ic_launcherSheep_color">@color/dark_brown</color>
+    <color name="fragment_background">@color/white</color>
+    <color name="measure_measureBox_background">@color/beige</color>
+
+    <color name="prim">#3b4d61</color>
+    <color name="prim2">#6b7b8c</color>
+    <color name="prim3">#437BAC</color>
+
+    <color name="dark_olive_green">#556b2f</color>
+    <color name="saddle_brown">#8b4513</color>
+    <color name="beige">#f5f5dc</color>
+
+    <color name="dark_green">#006400</color>
+    <color name="olive_green">#808000</color>
+    <color name="lime_green">#00FF00</color>
+
+    <color name="dark_brown">#654321</color>
+    <color name="earthy_brown">#8B4513</color>
+    <color name="sandy_brown">#F4A460</color>
+
+    <color name="deep_blue">#00008B</color>
+    <color name="sky_blue">#87CEEB</color>
+    <color name="teal_blue">#008080</color>
+    <color name="golden_yellow">#FFD700</color>
+
+    <color name="sunflower_yellow">#FDB827</color>
+    <color name="light_yellow">#FFFFE0</color>
+
+    <color name="rust_orange">#B7410E</color>
+    <color name="pumpkin_orange">#FF7518</color>
+    <color name="bright_orange">#FFA500</color>
+
+    <color name="tan">#D2B48C</color>
+    <color name="gray">#808080</color>
+
 </resources>
