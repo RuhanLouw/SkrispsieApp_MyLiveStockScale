@@ -1,6 +1,8 @@
 package com.mylivestock.app;
 
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -22,8 +25,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.mylivestock.app.databinding.ActivityMainBinding;
 import com.mylivestock.app.databinding.FragmentBluetoothBinding;
 import com.mylivestock.app.databinding.FragmentMeasureBinding;
+import com.mylivestock.app.ui.bluetooth.DeviceInfoModel;
 import com.mylivestock.app.ui.measure.MeasureFragment;
 import com.mylivestock.app.ui.measure.MeasureViewModel;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,8 +40,20 @@ public class MainActivity extends AppCompatActivity {
     private String deviceHardwareAddress;
     public static Handler handlerMain;
     public static BluetoothSocket mmSocket;
+
+    public ConnectedThread connectedThread;
+    public CreateConnectThread createConnectThread;
+    public ConnectionInit connectionInit;
+
+
+    //Connection status in handlerMain: Public variables for classes -> ConnectionInit, CreateConnectThread, ConnectThread
     public final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
+
+    public final static int CONNECTION_ERROR = 3; // used in handlerMain to identify connection error
+
+
+    private DeviceInfoModel deviceInfoModel;
 
 
 
@@ -70,12 +88,34 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        ProgressBar progressBarBtConnection = bindingMain.appBarMain.progressBarBtConnection;
+
         //Todo: Initialise UI
         //SharedViewModel
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         sharedViewModel.setMeasureText("---");
         sharedViewModel.setSystemText("no error");
 
+
+        //CreateConnectThread and ConnectedThread
+            //retrieve from (boolean) sharedViewModel.tryingToConnectBT
+        sharedViewModel.getTryingToConnectBT().observe(this, shouldConnect -> {
+            if (shouldConnect) {
+                //Start connection process and Initialise the ConnectedThread
+                progressBarBtConnection.setVisibility(View.VISIBLE);
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                DeviceInfoModel deviceInfoModel = sharedViewModel.getDeviceInfoModel().getValue();
+                String deviceHardwareAddress = null;
+                if (deviceInfoModel != null) {
+                    deviceHardwareAddress = deviceInfoModel.getDeviceHardwareAddress();
+                    createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceHardwareAddress);
+                    createConnectThread.start();
+                    connectedThread = createConnectThread.getConnectedThread();
+                }
+            } else {
+                progressBarBtConnection.setVisibility(View.GONE);
+            }
+        });
 
 
         /*
@@ -89,16 +129,22 @@ public class MainActivity extends AppCompatActivity {
                     case CONNECTING_STATUS:
                         //Todo: update UI
                         switch (msg.arg1){
+                            case 0:
+                                sharedViewModel.setSystemText("Connecting...");
+                                break;
                             case 1:
-
+                                sharedViewModel.setSystemText("Connected to device");
+                                sharedViewModel.setTryingToConnectBT(false);
                                 break;
                             case -1:
                                 sharedViewModel.setSystemText("Error connecting to device");
+                                sharedViewModel.setTryingToConnectBT(false);
                                 break;
                         }
                         break;
                     case MESSAGE_READ:
-                        //Todo: update UI
+                        String measurement = msg.obj.toString();
+                        sharedViewModel.setMeasureText(measurement);
                         break;
                 }
             }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,9 @@ public class MeasureFragment extends Fragment {
         Button buttonMeasure = binding.buttonMeasure;
         TextView textViewMeasure = binding.textViewMeasure;
         TextView textViewSystem = binding.textViewSystem;
+
+
+
         // Observe the measureText LiveData from the shared ViewModel &
         // Update the TextView with the new measureText value
         sharedViewModel.getMeasureText().observe(getViewLifecycleOwner(), textViewMeasure::setText);
@@ -53,10 +57,15 @@ public class MeasureFragment extends Fragment {
         // Observe the systemText LiveData from the shared ViewModel &
         // Update the TextView with the new systemText value
         sharedViewModel.getSystemText().observe(getViewLifecycleOwner(), textViewSystem::setText);
+
+        //if BtConnection not trying to connect?
+
         buttonMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 sharedViewModel.setMeasureText("128.63");
+                //connectedThread().write("requestMeasure");
+                sharedViewModel.setRequestMeasure(true);
             }
         });
 

@@ -11,11 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mylivestock.app.ConnectionInit;
 import com.mylivestock.app.R;
+import com.mylivestock.app.SharedViewModel;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Object> deviceList;
     private Fragment fragmentMove;
     public ConnectionInit connectionInit;
+
+    private SharedViewModel sharedViewModel;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textName, textAddress;
@@ -42,6 +47,8 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.context = context;
         this.deviceList = deviceList;
         fragmentMove = fragment;
+        //just use the fragment(to)Move to get parent activity
+        sharedViewModel = new ViewModelProvider(fragment.requireActivity()).get(SharedViewModel .class);
     }
 
     @NonNull
@@ -61,15 +68,16 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             @Override
             public void onClick(View v) {
 
-                //Start connection process
-                connectionInit = new ConnectionInit(deviceInfoModel.getDeviceName(), deviceInfoModel.getDeviceHardwareAddress());
-                //Notify of connection initiated
+                        //Start connection process
+                        //connectionInit = new ConnectionInit(deviceInfoModel.getDeviceName(), deviceInfoModel.getDeviceHardwareAddress());
+                //Notify of connection initiated and pass selected device to sharedViewModel
+                sharedViewModel.setDeviceInfoModel(deviceInfoModel);
+                sharedViewModel.setTryingToConnectBT(true);
+                NavHostFragment.findNavController(fragmentMove).navigate(R.id.nav_measure);
+
 
                 //Has a connection already been initiated?
                 //Possible bug, need to check redundancy
-                if (connectionInit.isConnectionStart()){
-                    NavHostFragment.findNavController(fragmentMove).navigate(R.id.nav_measure);
-                }
             }
         });
     }

@@ -6,6 +6,7 @@ public class ConnectionInit {
 
     private boolean connectionStart = false;
     public CreateConnectThread createConnectThread;
+    public ConnectedThread connectedThread;
     public ConnectionInit(String deviceName, String deviceHardwareAddress) {
 
         //if a bluetooth device has been selected from BluetoothFragment, then connect to it
@@ -19,6 +20,7 @@ public class ConnectionInit {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             createConnectThread = new CreateConnectThread(bluetoothAdapter, deviceHardwareAddress);
             createConnectThread.start();
+            connectedThread = createConnectThread.getConnectedThread();
             connectionStart = true;
         }
     }

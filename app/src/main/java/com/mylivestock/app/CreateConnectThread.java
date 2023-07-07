@@ -7,6 +7,7 @@ import static com.mylivestock.app.MainActivity.handlerMain;
 import static com.mylivestock.app.MainActivity.mmSocket;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class CreateConnectThread extends Thread{
+
+    ConnectedThread connectedThread = null;
     @SuppressLint("MissingPermission")
     public CreateConnectThread(BluetoothAdapter bluetoothAdapter, String deviceHardwareAddress){
 
@@ -58,11 +61,22 @@ public class CreateConnectThread extends Thread{
             } catch (IOException closeException) {
                 Log.e(TAG, "Could not close the client socket", closeException);
             }
+
+
+            //sharedViewModel.setTryingToConnectBT(false);
             return;
         }
         //connection successful
-        ConnectedThread connectedThread = new ConnectedThread(mmSocket);
+        connectedThread = new ConnectedThread(mmSocket);
         connectedThread.runStream();
+    }
+
+    public ConnectedThread getConnectedThread(){
+        if (connectedThread != null){
+            return connectedThread;
+        }else{
+            return null;
+        }
     }
 
     public void cancel(){
