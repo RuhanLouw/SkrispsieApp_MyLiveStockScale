@@ -21,13 +21,8 @@ public class SharedViewModel extends ViewModel {
     private final MutableLiveData<Boolean> requestMeasure = new MutableLiveData<>(false);
     // }
 
-    private final MutableLiveData<ConnectionInit> connectionInit = new MutableLiveData<>();
-    private final MutableLiveData<CreateConnectThread> createConnectThread = new MutableLiveData<>();
-    private final MutableLiveData<ConnectedThread> connectedThread = new MutableLiveData<>();
 
     private MutableLiveData<DeviceInfoModel> deviceInfoModel = new MutableLiveData<>();
-
-
 
     /// Shared Objects func
     public void setMeasureText(String text) {
@@ -38,7 +33,6 @@ public class SharedViewModel extends ViewModel {
     }
 
 
-
     public void setSystemText(String text) {
         systemText.setValue(text);
     }
@@ -47,12 +41,11 @@ public class SharedViewModel extends ViewModel {
     }
 
 
-
     public void setTryingToConnectBT(boolean value) {
         tryingToConnectBT.setValue(value);
-        if (!value) {
-            deviceInfoModel = null;
-        }
+//        if (!value) {
+//            deviceInfoModel = null;
+//        }
     }
     public LiveData<Boolean> getTryingToConnectBT() {
         return tryingToConnectBT;
@@ -69,12 +62,12 @@ public class SharedViewModel extends ViewModel {
 
 
 
-    public void setConnectionInit(ConnectedThread connectedThreadValue) {
-        connectedThread.setValue(connectedThreadValue);
-    }
-    public MutableLiveData<ConnectedThread> getConnectedThread(){
-        return connectedThread;
-    }
+//    public void setConnectionInit(ConnectedThread connectedThreadValue) {
+//        connectedThread.setValue(connectedThreadValue);
+//    }
+//    public MutableLiveData<ConnectedThread> getConnectedThread(){
+//        return connectedThread;
+//    }
 
 
 

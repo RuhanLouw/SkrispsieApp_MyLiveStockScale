@@ -1,5 +1,8 @@
 package com.mylivestock.app.ui.measure;
 
+import static com.mylivestock.app.MainActivity.MESSAGE_SEND;
+import static com.mylivestock.app.MainActivity.handlerMain;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +34,9 @@ public class MeasureFragment extends Fragment {
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          //measureViewModel = new ViewModelProvider(this).get(MeasureViewModel.class);
-
         binding = FragmentMeasureBinding.inflate(inflater, container, false);
-
         return binding.getRoot();
     }
 
@@ -47,8 +47,6 @@ public class MeasureFragment extends Fragment {
         Button buttonMeasure = binding.buttonMeasure;
         TextView textViewMeasure = binding.textViewMeasure;
         TextView textViewSystem = binding.textViewSystem;
-
-
 
         // Observe the measureText LiveData from the shared ViewModel &
         // Update the TextView with the new measureText value
@@ -63,9 +61,9 @@ public class MeasureFragment extends Fragment {
         buttonMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                sharedViewModel.setMeasureText("128.63");
-                //connectedThread().write("requestMeasure");
-                sharedViewModel.setRequestMeasure(true);
+                sharedViewModel.setSystemText("Requesting Measurement...");
+                String messageToSend = "1";
+                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
         });
 

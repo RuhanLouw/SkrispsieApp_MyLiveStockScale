@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mylivestock.app.ConnectionInit;
+//import com.mylivestock.app.ConnectionInit;
 import com.mylivestock.app.R;
 import com.mylivestock.app.SharedViewModel;
 
@@ -26,7 +26,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<Object> deviceList;
     private Fragment fragmentMove;
-    public ConnectionInit connectionInit;
+//    public ConnectionInit connectionInit;
 
     private SharedViewModel sharedViewModel;
 
@@ -68,8 +68,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             @Override
             public void onClick(View v) {
 
-                        //Start connection process
-                        //connectionInit = new ConnectionInit(deviceInfoModel.getDeviceName(), deviceInfoModel.getDeviceHardwareAddress());
+                //Start connection process
                 //Notify of connection initiated and pass selected device to sharedViewModel
                 sharedViewModel.setDeviceInfoModel(deviceInfoModel);
                 sharedViewModel.setTryingToConnectBT(true);
