@@ -21,8 +21,8 @@ public class SharedViewModel extends ViewModel {
     private final MutableLiveData<Boolean> requestMeasure = new MutableLiveData<>(false);
     // }
 
-
-    private MutableLiveData<DeviceInfoModel> deviceInfoModel = new MutableLiveData<>();
+    //BluetoothFragment UI Data
+    private final MutableLiveData<DeviceInfoModel> deviceInfoModel = new MutableLiveData<>();
 
     /// Shared Objects func
     public void setMeasureText(String text) {
@@ -51,8 +51,6 @@ public class SharedViewModel extends ViewModel {
         return tryingToConnectBT;
     }
 
-
-
     public void setRequestMeasure(boolean value) {
          requestMeasure.setValue(value);
     }
@@ -60,19 +58,8 @@ public class SharedViewModel extends ViewModel {
         return requestMeasure;
     }
 
-
-
-//    public void setConnectionInit(ConnectedThread connectedThreadValue) {
-//        connectedThread.setValue(connectedThreadValue);
-//    }
-//    public MutableLiveData<ConnectedThread> getConnectedThread(){
-//        return connectedThread;
-//    }
-
-
-
-    public void setDeviceInfoModel(DeviceInfoModel deviceInfoModel_toConnectTo) {
-        deviceInfoModel.setValue(deviceInfoModel_toConnectTo);
+    public void setDeviceInfoModel(DeviceInfoModel deviceInfoModel) {
+        this.deviceInfoModel.setValue(deviceInfoModel);
     }
     public LiveData<DeviceInfoModel> getDeviceInfoModel(){
         return deviceInfoModel;

@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ProgressBar progressBarBtConnection = bindingMain.appBarMain.progressBarBtConnection;
+        //
 
         //Todo: Initialise UI
         //SharedViewModel
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             if (shouldConnect) {
                 //Start connection process and Initialise the ConnectedThread
                 progressBarBtConnection.setVisibility(View.VISIBLE);
+                sharedViewModel.setSystemText("Connecting...");
                 BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 DeviceInfoModel deviceInfoModel = sharedViewModel.getDeviceInfoModel().getValue();
                 String deviceHardwareAddress = null;
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         //Todo: update UI
                         switch (msg.arg1){
                             case 0:
-                                sharedViewModel.setSystemText("Connecting...");
+                                sharedViewModel.setSystemText("Connecting to device");
                                 break;
                             case 1:
                                 sharedViewModel.setSystemText("Connected to device");
@@ -148,13 +150,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case MESSAGE_READ:
-                        String measurement = msg.obj.toString();
-                        sharedViewModel.setMeasureText(measurement);
+                        if (connectedThread != null) {
+                            String measurement = msg.obj.toString();
+                            sharedViewModel.setMeasureText(measurement);
+                            sharedViewModel.setSystemText("Measurement Received");
+                        }
                         break;
                     case MESSAGE_SEND:
                         //Todo: Check if connectedThread is NULL
-                        String messageToSend = msg.obj.toString();
-                        connectedThread.write(messageToSend+"\n");
+                        if (connectedThread != null) {
+                            String messageToSend = msg.obj.toString();
+                            connectedThread.write(messageToSend+"\n");
+                        }
                 }
             }
         };
