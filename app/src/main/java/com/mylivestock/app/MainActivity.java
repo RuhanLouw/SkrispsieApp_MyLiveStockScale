@@ -26,6 +26,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.mylivestock.app.data.repository.SheepViewModel;
 import com.mylivestock.app.databinding.ActivityMainBinding;
 import com.mylivestock.app.databinding.FragmentBluetoothBinding;
 import com.mylivestock.app.databinding.FragmentMeasureBinding;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding bindingMain;
     private SharedViewModel sharedViewModel;
+    private SheepViewModel sheepViewModel;
     public static Handler handlerMain;
     public static BluetoothSocket mmSocket;
     public static ConnectedThread connectedThread;
@@ -71,13 +73,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(bindingMain.appBarMain.toolbar);
 
         //Message fab
-        bindingMain.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bindingMain.appBarMain.fab.setOnClickListener(view ->
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+                .setAction("Action", null).show()
+        );
 
         //Navigation setup
         DrawerLayout drawer = bindingMain.drawerLayout;
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         //Todo: Initialise UI
         //SharedViewModel
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        sheepViewModel = new ViewModelProvider(this).get(SheepViewModel.class);
         sharedViewModel.setMeasureText("---");
         sharedViewModel.setSystemText("Connect to a Bluetooth Device");
 
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        //Todo: add buttons from pages
+        //Todo: add buttons from pages use sharedViewModel
     }//onCreate
 
     @Override
@@ -270,7 +270,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                Log.e("IOException", "Error occurred when creating Input or Output Stream", e);
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -282,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 try {
+                    //TODO: handle message here on this thread and update sharedviewmodel without going onto main's thread
+
                     /*
                     Read from the InputStream from Arduino until termination character is reached.
                     Then send the whole String message to GUI Handler.

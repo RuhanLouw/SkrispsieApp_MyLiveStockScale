@@ -24,11 +24,11 @@ import java.util.List;
 public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<Object> deviceList;
-    private Fragment fragmentMove;
+    private final List<Object> deviceList;
+    private final Fragment fragmentMove;
 //    public ConnectionInit connectionInit;
 
-    private SharedViewModel sharedViewModel;
+    private final SharedViewModel sharedViewModel;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +43,7 @@ public class DeviceListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public DeviceListAdapter(Context context, Fragment fragment, List<Object> deviceList) {
+    public DeviceListAdapter(Context context, Fragment fragment, List<Object> deviceList)   {
         this.context = context;
         this.deviceList = deviceList;
         fragmentMove = fragment;

@@ -54,7 +54,7 @@ public class BluetoothFragment extends Fragment {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         List<Object> deviceList = new ArrayList<>();
 
-        if (pairedDevices.size() > 0) {
+        if (!pairedDevices.isEmpty()) {
             //if paired devices are found
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();

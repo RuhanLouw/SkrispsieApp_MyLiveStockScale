@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dataAlertDialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dataAlertDialog_title_edit_data"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editSheepID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="SheepID"
+        android:inputType="text|textNoSuggestions"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editSheepName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="SheepName"
+        android:inputType="text|textNoSuggestions"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editSheepWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Weight"
+        android:inputType="text|textNoSuggestions"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editSheepNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="UserNote"
+        android:inputType="text|textNoSuggestions"
+        android:minHeight="48dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/editSheep_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/editSheep_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Save" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
