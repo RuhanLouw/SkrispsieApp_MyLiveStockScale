@@ -74,8 +74,9 @@ public class MeasureFragment extends Fragment {
             @Override
             public void onClick(View v){
                 sharedViewModel.setSystemText("Requesting Measurement...");
-                String messageToSend = "1";
-                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
+                sharedViewModel.setMeasureText("123.45");
+//                String messageToSend = "1";
+//                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
         });
 
@@ -92,8 +93,6 @@ public class MeasureFragment extends Fragment {
             @Override
             public void onClick(View v){
                 sharedViewModel.setSystemText("Saving Data...");
-
-
                 DataAlertDialog.showInsertDialog(requireContext(), sharedViewModel.getMeasureText().getValue(), new DataAlertDialog.InsertDataListener() {
                     @Override
                     public void onDataInserted(SheepMeasurement newSheepMeasurement) {

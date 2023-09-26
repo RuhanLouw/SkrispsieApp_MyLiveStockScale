@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Dao
 public interface SheepMeasurementDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertSheepMeasurement(SheepMeasurement sheepMeasurement);
 
     @Query("SELECT * FROM SheepMeasurements_table ORDER BY timestamp DESC")

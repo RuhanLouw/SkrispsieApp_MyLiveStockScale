@@ -26,23 +26,25 @@ public class dbAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context context;
     private List<SheepMeasurement> allMeasurmentsList;
-    SheepViewModel sheepViewModel;
+    private final SheepViewModel sheepViewModel;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         LinearLayout linearLayout_db;
-        TextView textView_db_sheepId;
-        TextView textView_db_sheepName;
-        TextView textView_db_sheepDate;
-        TextView textView_db_sheepNote;
+        TextView textViewDBid;
+        TextView textViewDBname;
+        TextView textViewDBdate;
+        TextView textViewDBweight;
+        TextView textViewDBnote;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            linearLayout_db = itemView.findViewById(R.id.linearLayout_db);
-            textView_db_sheepId = itemView.findViewById(R.id.textView_db_id);
-            textView_db_sheepName = itemView.findViewById(R.id.textView_db_name);
-            textView_db_sheepDate = itemView.findViewById(R.id.textView_db_date);
-            textView_db_sheepNote = itemView.findViewById(R.id.textView_db_note);
+        public ViewHolder(@NonNull View v) {
+            super(v);
+            linearLayout_db = v.findViewById(R.id.linearLayout_db);
+            textViewDBid = v.findViewById(R.id.textViewDBid);
+            textViewDBname = v.findViewById(R.id.textViewDBname);
+            textViewDBdate = v.findViewById(R.id.textViewDBdate);
+            textViewDBweight = v.findViewById(R.id.textViewDBweight);
+            textViewDBnote = v.findViewById(R.id.textViewDBnote);
         }
     }
     public dbAdapter(Context context, List<SheepMeasurement> allMeasurementsList, SheepViewModel _sheepViewModel){
@@ -60,23 +62,40 @@ public class dbAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder dbEntityHolder = (ViewHolder) holder;
         SheepMeasurement sheepMeasurement = allMeasurmentsList.get(position);
-        dbEntityHolder.textView_db_sheepId.setText(sheepMeasurement.getId());
-        dbEntityHolder.textView_db_sheepName.setText(sheepMeasurement.getSheepName());
-        dbEntityHolder.textView_db_sheepDate.setText(sheepMeasurement.getTimestamp());
-        dbEntityHolder.textView_db_sheepNote.setText(sheepMeasurement.getUserNote());
+        dbEntityHolder.textViewDBdate.setText(sheepMeasurement.getTimestamp());
+        dbEntityHolder.textViewDBid.setText(sheepMeasurement.getSheepId());
+        dbEntityHolder.textViewDBname.setText(sheepMeasurement.getSheepName());
+        dbEntityHolder.textViewDBweight.setText(sheepMeasurement.getSheepWeight_string());
+        dbEntityHolder.textViewDBnote.setText(sheepMeasurement.getUserNote());
 
-        //TODO: Add click listener
-            //TODO: functions to return data, that has been selected, to fragment for editDataDialog
+
+        //click listener
+            //functions to return data, that has been selected, to fragment for editDataDialog
         dbEntityHolder.linearLayout_db.setOnClickListener((v) -> {
             //alertDialog
-                //edit data
+                //edit data -> sheepMeasurement
             //update all measurements if data changed
-            DataAlertDialog.showEditDialog(context, sheepMeasurement, editedsheepMeasurement -> {
-                //TODO: check that it actually updates!!!!
-                sheepViewModel.update(editedsheepMeasurement);
+            DataAlertDialog.showEditDialog(context, sheepMeasurement, new DataAlertDialog.EditDataListener() {
+                @Override
+                public void onDataEdited(SheepMeasurement editedsheepMeasurement) {
+                    sheepViewModel.update(editedsheepMeasurement);
+            }
+                @Override
+                public void onDataDeleted(SheepMeasurement deletedSheepMeasurement) {
+                    AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(context);
+                    deleteBuilder.setTitle("Delete SheepMeasurement");
+                    deleteBuilder.setMessage("Are you sure you want to delete this SheepMeasurement Instance?");
 
+                    deleteBuilder.setPositiveButton("YES", (dialog1, which1) -> {
+                        sheepViewModel.delete(deletedSheepMeasurement);
+                        dialog1.dismiss();
+                    });
+
+                    deleteBuilder.setNegativeButton("NO", (dialog1, which1) -> dialog1.dismiss());
+                    AlertDialog deleteDialog = deleteBuilder.create();
+                    deleteDialog.show();
+                }
             });
-
         });
     }
 

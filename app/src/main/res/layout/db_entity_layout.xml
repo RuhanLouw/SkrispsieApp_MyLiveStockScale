@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView_db_date"
+            android:id="@+id/textViewDBdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -29,7 +29,8 @@
             android:id="@+id/linearLayout_db_properties"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp">
 
             <LinearLayout
                 android:id="@+id/linearLayout_db_left"
@@ -53,7 +54,7 @@
                     android:textSize="@dimen/size_dbText_l" />
 
                 <TextView
-                    android:id="@+id/textView_db_weight__unit"
+                    android:id="@+id/textView_db_weight_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Weight:"
@@ -69,21 +70,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView_db_id"
+                    android:id="@+id/textViewDBid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1234"
                     android:textSize="@dimen/size_dbText_l" />
 
                 <TextView
-                    android:id="@+id/textView_db_name"
+                    android:id="@+id/textViewDBname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sally"
                     android:textSize="@dimen/size_dbText_l" />
 
                 <TextView
-                    android:id="@+id/textView_db_weight"
+                    android:id="@+id/textViewDBweight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="56.3 kg"
@@ -94,10 +95,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView_db_note"
+            android:id="@+id/textViewDBnote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             android:text="Note: Has a septic cut on right hind leg"
             android:textSize="@dimen/size_dbText_s" />
 

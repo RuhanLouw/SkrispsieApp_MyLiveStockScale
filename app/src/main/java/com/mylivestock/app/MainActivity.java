@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding bindingMain;
     private SharedViewModel sharedViewModel;
-    private SheepViewModel sheepViewModel;
+    public SheepViewModel sheepViewModel;
     public static Handler handlerMain;
     public static BluetoothSocket mmSocket;
     public static ConnectedThread connectedThread;
@@ -155,12 +155,15 @@ public class MainActivity extends AppCompatActivity {
                             sharedViewModel.setMeasureText(measurement);
                             sharedViewModel.setSystemText("Measurement Received");
                         }
+
                         break;
                     case MESSAGE_SEND:
                         //Todo: Check if connectedThread is NULL
                         if (connectedThread != null) {
                             String messageToSend = msg.obj.toString();
                             connectedThread.write(messageToSend+"\n");
+                        }else {
+                            sharedViewModel.setSystemText("Error Not Connected");
                         }
                 }
             }

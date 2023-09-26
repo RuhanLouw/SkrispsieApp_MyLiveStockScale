@@ -27,11 +27,10 @@ public class DataFragment extends Fragment {
     private FragmentDataBinding binding;
     public SharedViewModel sharedViewModel;
     public SheepViewModel sheepViewModel;
-    private DataViewModel dataViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DataViewModel dataViewModel = new ViewModelProvider(requireActivity()).get(DataViewModel.class);
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         sheepViewModel = new ViewModelProvider(requireActivity()).get(SheepViewModel.class);
 
@@ -44,7 +43,8 @@ public class DataFragment extends Fragment {
         recyclerViewDB.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         sheepViewModel.getAllSheepMeasurements().observe(getViewLifecycleOwner(), allSheepMeasurmentsList -> {
-            recyclerViewDB.setAdapter(new dbAdapter(requireContext(), allSheepMeasurmentsList, sheepViewModel));
+            dbAdapter adapter = new dbAdapter(this.getContext(), allSheepMeasurmentsList, sheepViewModel);
+            recyclerViewDB.setAdapter(adapter);
             recyclerViewDB.setItemAnimator(new DefaultItemAnimator());
         });
 
