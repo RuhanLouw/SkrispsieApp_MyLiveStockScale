@@ -1,9 +1,10 @@
 package com.mylivestock.app;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,17 +30,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.mylivestock.app.data.repository.SheepViewModel;
 import com.mylivestock.app.databinding.ActivityMainBinding;
-import com.mylivestock.app.databinding.FragmentBluetoothBinding;
-import com.mylivestock.app.databinding.FragmentMeasureBinding;
 import com.mylivestock.app.ui.bluetooth.DeviceInfoModel;
-import com.mylivestock.app.ui.measure.MeasureFragment;
-import com.mylivestock.app.ui.measure.MeasureViewModel;
-import static android.content.ContentValues.TAG;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,17 +47,10 @@ public class MainActivity extends AppCompatActivity {
     public static BluetoothSocket mmSocket;
     public static ConnectedThread connectedThread;
     public CreateConnectThread createConnectThread;
-//    public ConnectionInit connectionInit;
-
-
     //Connection status in handlerMain: Public variables for classes -> ConnectionInit, CreateConnectThread, ConnectThread
     public final static int CONNECTING_STATUS = 1; // used in bluetooth handler to identify message status
     public final static int MESSAGE_READ = 2; // used in bluetooth handler to identify message update
-
     public final static int MESSAGE_SEND = 3; // used in handlerMain to identify connection error
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +81,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ProgressBar progressBarBtConnection = bindingMain.appBarMain.progressBarBtConnection;
-        //
 
-        //Todo: Initialise UI
         //SharedViewModel
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         sheepViewModel = new ViewModelProvider(this).get(SheepViewModel.class);
         sharedViewModel.setMeasureText("---");
         sharedViewModel.setSystemText("Connect to a Bluetooth Device");
-
 
         //CreateConnectThread and ConnectedThread
             //retrieve from (boolean) sharedViewModel.tryingToConnectBT
@@ -123,52 +109,68 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
         /*
         Second most important piece of Code. GUI Handler
          */
-        //Todo: Should handler for all UI be placed here?
         //require test
         handlerMain = new Handler(Looper.getMainLooper()){
-            public void handleMessage(Message msg){
+            public void handleMessage(@NonNull Message msg){
                 switch (msg.what){
                     case CONNECTING_STATUS:
-                        //Todo: update UI
+                        //update UI
                         switch (msg.arg1){
                             case 0:
                                 sharedViewModel.setSystemText("Connecting to device");
                                 break;
                             case 1:
                                 sharedViewModel.setSystemText("Connected to device");
+                                sharedViewModel.setIsConnected(true);
                                 sharedViewModel.setTryingToConnectBT(false);
 
                                 break;
                             case -1:
                                 sharedViewModel.setSystemText("Error connecting to device");
+                                sharedViewModel.setIsConnected(false);
                                 sharedViewModel.setTryingToConnectBT(false);
 
                                 break;
                         }
                         break;
-                    case MESSAGE_READ:
-                        if (connectedThread != null) {
-                            String measurement = msg.obj.toString();
-                            sharedViewModel.setMeasureText(measurement);
-                            sharedViewModel.setSystemText("Measurement Received");
-                        }
 
+                    case MESSAGE_READ:
+                        String measurement = msg.obj.toString();
+                        switch (msg.arg1){
+                            case 0:
+                                Log.d("ESP32", "0");
+                                sharedViewModel.setSystemText("Error from Scale");
+                                break;
+                            case 1:
+                                Log.d("ESP32", "1");
+                                sharedViewModel.setMeasureText(measurement);
+                                sharedViewModel.setSystemText("Measurement Received:");
+                                break;
+                            case 2:
+                                Log.d("ESP32", "2");
+                                sharedViewModel.setSystemText("Scale Tared");
+                                break;
+                        }
                         break;
+
                     case MESSAGE_SEND:
-                        //Todo: Check if connectedThread is NULL
                         if (connectedThread != null) {
                             String messageToSend = msg.obj.toString();
-                            connectedThread.write(messageToSend+"\n");
+                            connectedThread.write(messageToSend);
+                            break;
                         }else {
                             sharedViewModel.setSystemText("Error Not Connected");
+                            break;
                         }
                 }
             }
         };
-        //Todo: add buttons from pages use sharedViewModel
+
     }//onCreate
 
     @Override
@@ -212,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 Log.e(TAG, "Socket's create() method failed", e);
+
             }
             mmSocket = tmp;
         }
@@ -220,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             // Cancel discovery because it otherwise slows down the connection.
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            bluetoothAdapter.cancelDiscovery();
+            //bluetoothAdapter.cancelDiscovery();
             try {
                 // Connect to the remote device through the socket. This call blocks
                 // until it succeeds or throws an exception.
@@ -284,22 +287,27 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             byte[] buffer = new byte[1024];  // buffer store for the stream
             int bytes = 0; // bytes returned from read()
+            String fullMessage;
+            String readMessage;
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 try {
-                    //TODO: handle message here on this thread and update sharedviewmodel without going onto main's thread
-
                     /*
-                    Read from the InputStream from Arduino until termination character is reached.
-                    Then send the whole String message to GUI Handler.
+                    Read from the InputStream from ESP until termination character is reached.
+                    Then send the whole String message to GUI Handler. !! use args as instructions for message received
+                     INCOMING MESSAGE STRUCTURE:  "CODE":"MESSAGE"\n -> 2 bytes before message and one stop byte after message ('\n')
+                                                    1/0 : 123.45 \n
                      */
                     buffer[bytes] = (byte) mmInStream.read();
-                    String readMessage;
                     if (buffer[bytes] == '\n'){
-                        readMessage = new String(buffer,0,bytes);
-                        Log.e("ESP32 Message",readMessage);
-                        handlerMain.obtainMessage(MESSAGE_READ,readMessage).sendToTarget();
+                        int code = buffer[0] - '0';
+                        fullMessage = new String(buffer,0,bytes);
+                        Log.e("ESP32 Message", "fullMessage: " + fullMessage);
+                        readMessage = fullMessage.substring(2); //-> offset 2 bytes ('code' & ':') before message and one stop byte after message ('\n')
+                        Log.e("ESP32", readMessage);
+                        handlerMain.obtainMessage(MESSAGE_READ,code,0,readMessage).sendToTarget(); // arg2: dummy
                         bytes = 0;
+//                        byte lastByte = (byte) mmInStream.read();//last bit to receive
                     } else {
                         bytes++;
                     }
@@ -310,9 +318,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        /* Call this from the main activity to send data to the remote device */
+        /* Call this from the main activity to send data to the remote Bluetooth Device */
         public void write(String input) {
-            byte[] bytes = input.getBytes(); //converts entered String into bytes
+            byte[] bytes = (input).getBytes(); //adds stop byte and converts entered String into bytes
             try {
                 mmOutStream.write(bytes);
             } catch (IOException e) {

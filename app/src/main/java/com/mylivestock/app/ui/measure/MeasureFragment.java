@@ -67,16 +67,29 @@ public class MeasureFragment extends Fragment {
         // Update the TextView with the new systemText value
         sharedViewModel.getSystemText().observe(getViewLifecycleOwner(), textViewSystem::setText);
 
-        //if BtConnection not trying to connect?
 
-        //TODO: set up the buttons
+
+        // Observe if connected or not and adjust btn click-ability
+        sharedViewModel.getIsConnected().observe(getViewLifecycleOwner(), isConnected -> {
+            buttonMeasure.setEnabled(isConnected);
+            buttonTare.setEnabled(isConnected);
+            buttonSleepWake.setEnabled(isConnected);
+        });
+
+
+        //set up the buttons
         buttonMeasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 sharedViewModel.setSystemText("Requesting Measurement...");
-                sharedViewModel.setMeasureText("123.45");
-//                String messageToSend = "1";
-//                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
+                //sharedViewModel.setMeasureText("123.45");
+                String messageToSend; //1 for measurement and 0 for calibration
+                if (switchCalibrate.isChecked()) {
+                    messageToSend = "11\n";
+                } else {
+                    messageToSend = "10\n";
+                }
+                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
         });
 
@@ -84,7 +97,12 @@ public class MeasureFragment extends Fragment {
             @Override
             public void onClick(View v){
                 sharedViewModel.setSystemText("Requesting Tare...");
-                String messageToSend = "2";
+                String messageToSend;
+                if (switchCalibrate.isChecked()) {
+                    messageToSend = "21\n";
+                } else {
+                    messageToSend = "20\n";
+                }
                 handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
         });
@@ -109,11 +127,11 @@ public class MeasureFragment extends Fragment {
             public void onClick(View v){
                 if(sharedViewModel.getIsAwake()){
                     sharedViewModel.setSystemText("Sleeping...");
-                    String messageToSend = "5";
+                    String messageToSend = "3\n";
                     handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
                 }else{
                     sharedViewModel.setSystemText("Waking...");
-                    String messageToSend = "6";
+                    String messageToSend = "3\n";
                     handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
 
                 }

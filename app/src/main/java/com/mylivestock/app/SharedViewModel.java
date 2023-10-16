@@ -48,7 +48,6 @@ public class SharedViewModel extends ViewModel {
     public LiveData<Boolean> getIsConnected(){return isConnected;}
     public void setIsConnected(boolean value){isConnected.setValue(value);}
     //
-    //
     public void setRequestMeasure(boolean value) {
          requestMeasure.setValue(value);
     }

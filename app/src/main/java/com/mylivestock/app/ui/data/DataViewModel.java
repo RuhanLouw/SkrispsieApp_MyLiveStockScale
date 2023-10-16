@@ -13,7 +13,7 @@ import com.mylivestock.app.data.repository.SheepRepository;
 import java.io.Closeable;
 import java.util.List;
 
-//TODO: remove usage, shared
+
 public class DataViewModel extends ViewModel {
 
 //    private final MutableLiveData<String> mText;

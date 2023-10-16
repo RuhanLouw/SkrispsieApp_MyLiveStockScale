@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:background="@color/measure_measureBox_background"
+        android:background="@color/fragment_background"
         android:fadingEdge="vertical"
         android:gravity="center"
         android:orientation="horizontal"
@@ -39,7 +39,9 @@
             android:layout_height="wrap_content"
             android:text="128.63"
             android:textAlignment="center"
-            android:textSize="@dimen/size_measureText" />
+            android:textAllCaps="false"
+            android:textSize="@dimen/size_measureText"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewUnit"
@@ -47,36 +49,63 @@
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
             android:text="KG"
-            android:textSize="@dimen/size_measureText" />
+            android:textAllCaps="false"
+            android:textSize="@dimen/size_measureText"
+            android:textStyle="bold" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/buttonMeasure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="Measure"
+        android:textSize="@dimen/btn_textSize"
+        android:textStyle="bold"
+        app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <Button
         android:id="@+id/buttonTare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="Tare"
+        android:textSize="@dimen/btn_textSize"
+        android:textStyle="bold"
+        app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMeasure" />
+        app:layout_constraintTop_toBottomOf="@+id/switchCalibrate" />
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Save"
+        android:layout_marginTop="40dp"
+        android:text="Save Inspection"
+        android:textSize="@dimen/btn_textSize"
+        android:textStyle="bold"
+        app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonTare" />
 
@@ -84,9 +113,13 @@
         android:id="@+id/buttonSleepWake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="Sleep/Wake"
+        android:textSize="@dimen/btn_textSize"
+        android:textStyle="bold"
+        app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSave" />
 
@@ -94,11 +127,13 @@
         android:id="@+id/switchCalibrate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
         android:checked="false"
         android:scaleX="1.2"
         android:scaleY="1.2"
-        android:text="Calibrate"
-        app:layout_constraintStart_toEndOf="@+id/buttonMeasure"
-        app:layout_constraintTop_toTopOf="@+id/buttonMeasure" />
+        android:text="Calibrate with Measurment   "
+        android:textSize="@dimen/btn_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonMeasure" />
 </androidx.constraintlayout.widget.ConstraintLayout>

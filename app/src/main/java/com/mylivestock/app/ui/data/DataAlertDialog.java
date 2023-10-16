@@ -48,6 +48,7 @@ public class DataAlertDialog {
         //-- BTNs---
         builder.setPositiveButton("Update", (dialog, which) -> {
             SheepMeasurement editedSheepMeasurement = new SheepMeasurement(
+                    //TODO: need to add sql id for update to work
                     editSheepMeasurement.timestamp,
                     editSheepID.getText().toString(),
                     editSheepName.getText().toString(),
