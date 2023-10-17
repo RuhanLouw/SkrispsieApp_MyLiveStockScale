@@ -78,9 +78,8 @@
         android:textStyle="bold"
         app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonContMeasure" />
 
     <Button
         android:id="@+id/buttonTare"
@@ -93,7 +92,7 @@
         app:iconTint="@color/header_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchCalibrate" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonMeasure" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -135,5 +134,16 @@
         android:textSize="@dimen/btn_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMeasure" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSleepWake" />
+
+    <Button
+        android:id="@+id/buttonContMeasure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Cont Measure"
+        android:textSize="@dimen/btn_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 </androidx.constraintlayout.widget.ConstraintLayout>

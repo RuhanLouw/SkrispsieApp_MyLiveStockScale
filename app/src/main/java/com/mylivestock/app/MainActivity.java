@@ -155,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("ESP32", "2");
                                 sharedViewModel.setSystemText("Scale Tared");
                                 break;
+                            case 3:
+                                Log.d("ESP32", "3");
+                                sharedViewModel.setSystemText("Continuous Measurement");
                         }
                         break;
 
@@ -162,11 +165,10 @@ public class MainActivity extends AppCompatActivity {
                         if (connectedThread != null) {
                             String messageToSend = msg.obj.toString();
                             connectedThread.write(messageToSend);
-                            break;
                         }else {
                             sharedViewModel.setSystemText("Error Not Connected");
-                            break;
                         }
+	                    break;
                 }
             }
         };

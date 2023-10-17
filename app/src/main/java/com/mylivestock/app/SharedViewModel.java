@@ -14,7 +14,6 @@ public class SharedViewModel extends ViewModel {
     private Boolean isAwake = true;
     private final MutableLiveData<String> measureText = new MutableLiveData<>();
     private final MutableLiveData<String> systemText = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> requestMeasure = new MutableLiveData<>(false);
     private final MutableLiveData<DeviceInfoModel> deviceInfoModel = new MutableLiveData<>();
 
     /// Shared Objects func
@@ -47,15 +46,7 @@ public class SharedViewModel extends ViewModel {
     //
     public LiveData<Boolean> getIsConnected(){return isConnected;}
     public void setIsConnected(boolean value){isConnected.setValue(value);}
-    //
-    public void setRequestMeasure(boolean value) {
-         requestMeasure.setValue(value);
-    }
-    public LiveData<Boolean> getRequestMeasure(boolean value) {
-        return requestMeasure;
-    }
-    //
-    //
+
     public void setDeviceInfoModel(DeviceInfoModel deviceInfoModel) {
         this.deviceInfoModel.setValue(deviceInfoModel);
     }

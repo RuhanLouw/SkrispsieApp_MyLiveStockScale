@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Switch;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,6 +52,7 @@ public class MeasureFragment extends Fragment {
 
         TextView textViewMeasure = binding.textViewMeasure;
         TextView textViewSystem = binding.textViewSystem;
+        Button buttonContMeasure = binding.buttonContMeasure;
         Button buttonMeasure = binding.buttonMeasure;
         SwitchCompat switchCalibrate = binding.switchCalibrate;
         Button buttonTare = binding.buttonTare;
@@ -83,12 +83,21 @@ public class MeasureFragment extends Fragment {
             public void onClick(View v){
                 sharedViewModel.setSystemText("Requesting Measurement...");
                 //sharedViewModel.setMeasureText("123.45");
-                String messageToSend; //1 for measurement and 0 for calibration
+                String messageToSend; //1 for measurement and 1 for calibration
                 if (switchCalibrate.isChecked()) {
                     messageToSend = "11\n";
                 } else {
                     messageToSend = "10\n";
                 }
+                handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
+            }
+        });
+        buttonContMeasure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                sharedViewModel.setSystemText("Continuous Measurement Requested...");
+                String messageToSend;
+                messageToSend = "20\n";
                 handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
         });
@@ -99,9 +108,9 @@ public class MeasureFragment extends Fragment {
                 sharedViewModel.setSystemText("Requesting Tare...");
                 String messageToSend;
                 if (switchCalibrate.isChecked()) {
-                    messageToSend = "21\n";
+                    messageToSend = "31\n";
                 } else {
-                    messageToSend = "20\n";
+                    messageToSend = "30\n";
                 }
                 handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
             }
@@ -115,6 +124,7 @@ public class MeasureFragment extends Fragment {
                     @Override
                     public void onDataInserted(SheepMeasurement newSheepMeasurement) {
                         sheepViewModel.insert(newSheepMeasurement);
+                        sharedViewModel.setSystemText("Data Saved");
                     }
 
                 });
@@ -127,11 +137,11 @@ public class MeasureFragment extends Fragment {
             public void onClick(View v){
                 if(sharedViewModel.getIsAwake()){
                     sharedViewModel.setSystemText("Sleeping...");
-                    String messageToSend = "3\n";
+                    String messageToSend = "4\n";
                     handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
                 }else{
                     sharedViewModel.setSystemText("Waking...");
-                    String messageToSend = "3\n";
+                    String messageToSend = "4\n";
                     handlerMain.obtainMessage(MESSAGE_SEND, messageToSend).sendToTarget();
 
                 }
